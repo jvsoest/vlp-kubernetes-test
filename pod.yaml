@@ -1,0 +1,38 @@
+###########################################
+# Define deployment & pod
+###########################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coral-dashboard-deployment
+spec:
+  selector:
+    matchLabels:
+      app: coral-dashboard-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: coral-dashboard-pod
+    spec:
+      containers:
+      - name: tomcat-image-vlp-dashboard
+        image: jvsoest/vlp-dashboard
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /app/private-pkcs8.key
+          name: vlp-private-key
+        - mountPath: /app/application-dev.yml
+          name: vlp-config-file
+      volumes:
+      - name: vlp-private-key
+        hostPath:
+          # directory location on host
+          path: /Users/johan/Desktop/kubernetes/dashConfig/private-pkcs8.key
+          # this field is optional
+          type: File
+      - name: vlp-config-file
+        hostPath:
+          path: /Users/johan/Desktop/kubernetes/dashConfig/application-dev.yml
+          type: File

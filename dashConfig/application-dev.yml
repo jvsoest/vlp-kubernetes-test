@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./db/vlp-dashboard;MVCC=FALSE;MV_STORE=FALSE
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate.ddl-auto: update
+
+logging:
+  level:
+    nl.maastro: DEBUG
+
+vlp-dashboard:
+  jwt:
+    mapping-id: 18
+    private-key:  ./private-pkcs8.key
+  run-polling-interval: 5000
+  run-polling-timeout: 600000
+  images-folder: './images'
+  algorithms: 
+    - id: 20750
+      name: 'Clinical Similarity Investigator'
+      max-iterations: 3
+      ignore-unavailable-sites: false
+    - id: 20732
+      name: 'Clinical Simulator (model learning)'
+      max-iterations: 12
+      ignore-unavailable-sites: false
+    - id: 20742
+      name: 'Cohort Statistics'
+      max-iterations: 3
+      ignore-unavailable-sites: false
+  model-loaders:
+    - model-type: CoxPH
+      url: 'http://coxviewer.jvsoest.eu/'
+
+swagger.enabled: true
